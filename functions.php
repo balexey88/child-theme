@@ -303,7 +303,7 @@ function abv_my_more_settings_render() {}
       add_settings_field(
           'abv_my_setting2', // $name - имя поля в базе данных
           __('Setting 2', 'text_domain'), // $title - заголовок секции
-          'abv_setting_field_function', // $function - функция, которая будет выводить поле
+          'abv_setting_select', // $function - функция, которая будет выводить поле
           'abv_my_settings', // $menu_slug страницы настроек
           'abv_setting_section', // $id секции
           ['name' => 'abv_my_setting2']
@@ -346,7 +346,7 @@ function abv_my_more_settings_render() {}
       $value = get_option($name);
       $class = isset($args['class']) ? $args['class'] : '';
 
-      echo '<input type="text" class="regular-text ' . $class. '" id="' .$name .'" name="' . $name .'" value="' . $value . '">';
+      include 'input.php';
   }
 
 add_action('wp_head', 'abv_menu_color');
@@ -358,5 +358,26 @@ function abv_menu_color() {
     color: <?=get_option('abv_menu_color');?>;
   }
   </style>
+  <?php
+}
+
+function abv_setting_select($args) {
+  $name = $args['name'];
+  $value = get_option($name);
+
+  $options = [
+    1 => 'Value 1',
+    2 => 'Value 2',
+    3 => 'Value 3',
+    4 => 'Value 4',
+    5 => 'Value 5',
+  ];
+  ?>
+    <select id="<?=$name?>" name="<?=$name?>" class="regular-text">
+      <?php foreach ($options as $key => $title): ?>
+        <option value="<?=$key?>" <?php selected($key, $value); ?> > <?=$title?></option>
+      <?php endforeach; ?>
+    </select>
+
   <?php
 }
